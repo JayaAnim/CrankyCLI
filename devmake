@@ -1,0 +1,36 @@
+# Makefile for a C++ project
+
+# Compiler and compiler flags
+CXX = g++
+CXXFLAGS = -Wall -Wextra -g -std=c++11
+
+SRCDIR = src
+INCDIR = include
+OBJDIR = obj
+BINDIR = bin
+
+all: $(BINDIR) $(OBJDIR) $(BINDIR)/cranky clean
+
+$(BINDIR):
+	mkdir -p $(BINDIR)
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
+$(BINDIR)/cranky: $(OBJDIR)/main.o $(OBJDIR)/CLI.o $(OBJDIR)/ArgumentNode.o $(OBJDIR)/Option.o
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+$(OBJDIR)/main.o: $(SRCDIR)/main.cpp $(INCDIR)/CLI.hpp 
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJDIR)/CLI.o: $(SRCDIR)/CLI.cpp $(INCDIR)/CLI.hpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJDIR)/ArgumentNode.o: $(SRCDIR)/ArgumentNode.cpp $(INCDIR)/ArgumentNode.hpp $(INCDIR)/Option.hpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJDIR)/Option.o: $(SRCDIR)/Option.cpp $(INCDIR)/Option.hpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJDIR)/*o

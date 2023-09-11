@@ -1,0 +1,44 @@
+#include <iostream>
+using namespace std;
+int hello(int x) {
+    cout << x << endl;
+    return x;
+}
+int bye(int y) {
+    cout << y;
+    return y;
+}
+
+class Test {
+    public:
+        Test() {
+            cout << "initialized";
+        }
+        static int another(int j) {
+            cout << "works";
+            return 8;
+        }
+        void setTester(int (*ptr) (int)) {
+            tester = ptr;
+        }
+        int (*tester) (int);
+};
+
+
+
+int main() {
+    Test obj;
+    //obj.setTester();
+    obj.tester = Test::another;
+    obj.tester(7);
+    obj.setTester(bye);
+    obj.tester(101);
+    int (*yes) (int);
+    yes = &hello;
+    yes(7);
+    yes = &bye;
+    yes(8);
+    std::cout << "Hello world!";
+
+    return 0;
+}
