@@ -1,0 +1,150 @@
+# Makefile for a C++ project
+
+# Compiler and compiler flags
+CXX = g++
+CXXFLAGS = -Wall -Wextra -g -std=c++11
+
+SRCDIR = src
+INCDIR = include
+OBJDIR = .
+BINDIR = bin
+
+all: $(BINDIR) $(OBJDIR) $(BINDIR)/myshell clean
+
+$(BINDIR):
+	mkdir -p $(BINDIR)
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
+$(BINDIR)/myshell: $(OBJDIR)/myshell.o $(OBJDIR)/parse.o $(OBJDIR)/param.o
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+$(OBJDIR)/myshell.o: $(SRCDIR)/myshell.cpp $(OBJDIR)/parse.o 
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJDIR)/parse.o: $(SRCDIR)/parse.cpp $(INCDIR)/parse.h $(OBJDIR)/param.o
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJDIR)/param.o: $(SRCDIR)/param.cpp $(INCDIR)/param.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	rm -r $(OBJDIR)/*o 
+
+
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <map>
+#include "../include/OptNode.h"
+
+
+
+OptNode::OptNode() {
+    this->left_node = nullptr;
+    this->right_node = nullptr;
+    this->key = "Uninitialized";
+}
+
+OptNode::OptNode(const char* key) {
+    this->left_node = nullptr;
+    this->right_node = nullptr;
+    this->key = key;
+}
+
+OptNode* OptNode::insert(const char* key) {
+    if (!is_valid_key(key)) return nullptr;
+
+    if (strcmp(this->key, key) < 0) {
+        if (this->left_node == nullptr) {
+            this->left_node = new OptNode(key);
+            return this->left_node;
+        }
+        return this->left_node->insert(key);
+    }
+    else if (strcmp(this->key, key) > 0) {
+        if (this->right_node == nullptr) {
+            this->right_node = new OptNode(key);
+            return this->right_node;
+        }
+        return this->right_node->insert(key);
+    }
+    return nullptr;
+}
+
+OptNode* OptNode::search(char* key) {
+    if (strcmp(this->key, key) < 0) {
+        if (this->left_node == nullptr) return nullptr;
+        return this->left_node->search(key); 
+    }
+    else if (strcmp(this->key, key) > 0) {
+        if (this->right_node == nullptr) return nullptr;
+        return this->right_node->search(key);
+    }
+    return this;
+}
+
+bool OptNode::is_valid_key(const char* key) {
+    int index = 0;
+    while (key[index] != '\0') {
+        if ((index == 0 || index == 1) && key[index] != '-') {
+            std::cout << "[ERROR] Invalid Option: Options and flags must be --<option/flag name>" << std::endl;
+        }
+        ++index;
+    }
+    if (index < 2) {
+        std::cout << "[ERROR] Invalid Option: Options and flags must be --<option/flag name>" << std::endl;
+    }
+    return true;
+}
+
+bool OptNode::is_valid(char* arg) {
+    return true;
+}
+
+bool OptNode::parse(std::map<const char*, std::vector<const char*>> &hashmap_ref, int &curr_pos, int argc, char* argv[]) {
+    bool parsing_opts = true;
+    for (; curr_pos < argc; curr_pos++) {
+
+        //Search if flag or option is in tree
+        //If it is not in the tree, return false
+        OptNode* node = search(argv[curr_pos]);        
+        if (node == nullptr) return false;
+
+        // If argv is a flag and we are currently parsing options, flip to parsing flags
+        if (node->flag_alias != nullptr && parsing_opts) parsing_opts = false;
+        // If argv is a option and we are currently parsing flags, return false because options must go before flags
+        else if (node->flag_alias != nullptr && !parsing_opts) return false;
+       
+
+        //If it is in the tree and is an option, check if another argv exists next
+        if (parsing_opts) {
+            //If option has already been added return false because options can only be added once
+            if (hashmap_ref[argv[curr_pos]].size() > 0) return false;
+            //If no argv exists next return false
+            else if (++curr_pos == argc) return false;
+            //If argv exists next and is not valid return false
+            else if (!node->is_valid(argv[curr_pos])) return false;
+            //If argv exists next and is valid add to map
+            hashmap_ref[node->key].push_back(argv[curr_pos]);
+        }
+                
+        //If it is in the tree and is a flag add it to map
+        else {
+            //If flag was already added, return false because flags can only be added once
+            if (hashmap_ref[argv[curr_pos]].size() > 0) {
+                std::cout << "Here 6" << std::endl;
+                return false;
+            }
+            else hashmap_ref[argv[curr_pos]].push_back(argv[curr_pos]);
+        }
+    }
+    return true;
+}
+
+OptNode::~OptNode() {
+    std::cout << "Deleting node: " << this->key << std::endl;
+    if (this->left_node != nullptr) delete this->left_node;
+    if (this->right_node != nullptr) delete this->right_node;
+}
