@@ -1,3 +1,4 @@
+/*
 #ifndef FLAGNODE_H
 #define FLAGNODE_H
 #include <map>
@@ -18,3 +19,4 @@ struct FlagNode {
 };
 
 #endif
+*/

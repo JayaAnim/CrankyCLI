@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <map>
 #include <vector>
@@ -8,15 +9,15 @@ ArgNode::ArgNode() {
     this->next_node = nullptr;
 }
 
-ArgNode::ArgNode(const char* key, int n) {
-    this->key = key;
+ArgNode::ArgNode(const char* arg, int n) {
+    this->arg = arg;
     this->n = n;
     this->next_node = nullptr;
 }
 
-ArgNode* ArgNode::append(ArgNode** tail, const char* key, int n = 1) {
+ArgNode* ArgNode::append(ArgNode** tail, const char* arg, int n = 1) {
     ArgNode* new_node = new ArgNode();
-    new_node->key = key;
+    new_node->arg = arg;
     new_node->n = n;
     (*tail)->next_node = new_node;
     (*tail) = new_node;
@@ -38,7 +39,7 @@ bool ArgNode::parse(std::map<const char*, std::vector<const char*>>& hashmap_ref
         if (!is_valid(argv[curr_pos])) {
             return false;  
         }
-        hashmap_ref[this->key].push_back(argv[curr_pos]);
+        hashmap_ref[this->arg].push_back(argv[curr_pos]);
         ++curr_pos;
         ++parsed;
     }
@@ -62,3 +63,4 @@ bool ArgNode::parse(std::map<const char*, std::vector<const char*>>& hashmap_ref
 ArgNode::~ArgNode() {
     if (this->next_node != nullptr) delete this->next_node;
 }
+*/

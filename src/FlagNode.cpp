@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <map>
 #include <vector>
@@ -103,3 +104,4 @@ FlagNode::~FlagNode() {
     if (this->left_node != nullptr) delete this->left_node;
     if (this->right_node != nullptr) delete this->right_node;
 }
+*/
