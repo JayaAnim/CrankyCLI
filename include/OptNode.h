@@ -4,15 +4,20 @@
 #include <vector>
 #include <map>
 
-struct OptNode {
-    OptNode(); // Used for creation of head node, reservers "--headoptionnode" flag name
-    OptNode(const char* opt);
-    bool is_valid(char* argv);
-    ~OptNode();
-    OptNode* left_node;
-    OptNode* right_node;
-    const char* opt = nullptr;
-    char* index_opt = nullptr;
+class OptNode {
+    public:
+        OptNode();
+        OptNode(const char* opt, int n = 0); // base constructor, validates opt param, if n = 0 option is treated as flag, and alias's are allowed 
+        OptNode(const OptNode& node); // Copy constructor overload
+        OptNode& operator=(const OptNode& node); // Copy assignment overload
+        static void validate_alias(const char* opt); // Used to validate alias keys used in hashmap, throws error if invalid
+        bool is_valid(char* argv); // validates if received argv is valid opt
+        char* get_opt() const;
+        int get_n() const;
+        ~OptNode(); // destructor
+    private:
+        int n;
+        char* opt;
 };
 
 #endif
