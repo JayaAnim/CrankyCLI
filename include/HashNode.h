@@ -17,7 +17,7 @@ class HashNode {
             this->obj = obj;
         }
 
-        V find(const char* key) {
+        V find(char* key) {
             if (key == this->obj) {
                 return this->obj;
             }

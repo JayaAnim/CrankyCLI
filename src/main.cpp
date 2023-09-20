@@ -10,8 +10,6 @@
 
 int main(int argc, char* argv[]) {
     try {
-        /*
-         * testing hashmap runtime
         HashMap<OptNode>* hashmap = new HashMap<OptNode>();
         OptNode node1("--flag1");
         OptNode node2("--option1", 1);
@@ -21,8 +19,10 @@ int main(int argc, char* argv[]) {
         hashmap->insert("--flag2", node3);
         hashmap->insert("-a", node4);
         hashmap->insert("--flag1", node1);
+        for (int i = 0; i < argc; ++i) {
+            if (hashmap->
+        }
         delete hashmap;
-        */
     } catch (const char* error) {
         std::cout << error << std::endl;
     }
