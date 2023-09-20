@@ -28,10 +28,10 @@ class HashMap {
             return map[hash_code].append(key, obj);
         }
 
-        V get_elem(char* key) {
-           int hash_code = this->hash(key);
-           if (map[hash_code] == nullptr) return nullptr;
-           return map[hash_code].find(key);
+        V* search(char* key) {
+            int hash_code = this->hash(key);
+            if (map[hash_code].get_key() == nullptr) return nullptr;
+            return map[hash_code].search(key);
         }
 
         ~HashMap() {

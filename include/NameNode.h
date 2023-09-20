@@ -6,6 +6,7 @@ class NameNode {
         NameNode();
         NameNode(char* val);
         NameNode* append(NameNode** tail, char* val);
+        void print();
         ~NameNode();
     private:
         NameNode* next;

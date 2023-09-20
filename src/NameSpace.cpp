@@ -58,6 +58,14 @@ NameNode* NameSpace::search(const char* key) {
     return this->head;
 }
 
+void NameSpace::print() {
+    std::cout << this->key << ":\t";
+    if (this->head != nullptr) this->head->print();
+    std::cout << std::endl;
+    if (this->left_node != nullptr) this->left_node->print();
+    if (this->right_node != nullptr) this->right_node->print();
+}
+
 NameSpace::~NameSpace() {
     if (this->key != nullptr) delete  this->key;
     if (this->head != nullptr) delete this->head;

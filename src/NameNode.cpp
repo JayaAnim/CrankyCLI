@@ -21,6 +21,13 @@ NameNode* NameNode::append(NameNode** tail, char* val) {
     return new_node;
 }
 
+
+void NameNode::print() {
+    std::cout << this->val << "\t";
+    if (this->next != nullptr) this->next->print();
+    std::cout << std::endl;
+}
+
 NameNode::~NameNode() {
     if (this->val != nullptr) delete this->val;
     if (this->next) delete next;

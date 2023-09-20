@@ -17,12 +17,12 @@ class HashNode {
             this->obj = obj;
         }
 
-        V find(char* key) {
-            if (key == this->obj) {
-                return this->obj;
+        V* search(char* key) {
+            if (this->obj == key) {
+                return &this->obj;
             }
             else if (this->next != nullptr) {
-                return this->find(key); 
+                return this->next->search(key); 
             }
             return nullptr;
         }
@@ -48,6 +48,10 @@ class HashNode {
         HashNode* set_next(HashNode* next) {
             this->next = next;
             return this;
+        }
+
+        const char* get_key() const {
+            return this->key;
         }
 
         ~HashNode() {

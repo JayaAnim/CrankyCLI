@@ -33,6 +33,11 @@ OptNode& OptNode::operator=(const OptNode& node) {
     this->n = node.get_n();
     return *this;
 }
+
+bool OptNode::operator==(char* opt) const {
+    if (strcmp(this->opt, opt) == 0) return true;
+    return false;
+}
                               
 bool OptNode::is_valid(char* argv) {
     return true;
