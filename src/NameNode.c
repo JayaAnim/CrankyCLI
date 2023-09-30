@@ -1,5 +1,4 @@
-#include <iostream>
-#include <cstring>
+#include <stdio.h>
 #include "../include/NameNode.h"
 
 

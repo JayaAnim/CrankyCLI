@@ -4,7 +4,7 @@
 #include <cstring>
 
 template <typename V>
-class HashNode {
+struct HashNode {
     public:
         HashNode() {
             this->next = nullptr;

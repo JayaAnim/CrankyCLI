@@ -1,14 +1,12 @@
 #ifndef HASHMAP_H
 #define HASHMAP_H
-#include <iostream>
-#include <cstring>
+#include <stdio.h>
 #include "../include/OptNode.h"
 #include "HashNode.h"
 
 
 template <typename V>
-class HashMap {
-    public:
+struct HashMap {
         HashMap() {
             map = new HashNode<V>[30];
         }
@@ -40,7 +38,6 @@ class HashMap {
             }
         }
 
-    private:
         HashNode<V>* map;
 };
 
