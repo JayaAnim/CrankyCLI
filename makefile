@@ -1,8 +1,8 @@
-# Makefile for a C++ project
+# Makefile for a C project
 
 # Compiler and compiler flags
-CXX = g++
-CXXFLAGS = -Wall -Wextra -g -std=c++11
+CC = gcc
+CFLAGS = -Wall -Wextra -g -std=c11
 
 SRCDIR = src
 INCDIR = include
@@ -17,20 +17,33 @@ $(BINDIR):
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
-$(BINDIR)/cranky: $(OBJDIR)/main.o $(OBJDIR)/OptNode.o $(OBJDIR)/NameNode.o $(OBJDIR)/NameSpace.o
-	$(CXX) $(CXXFLAGS) $^ -o $@
+$(BINDIR)/cranky: $(OBJDIR)/main.o $(OBJDIR)/HashNode.o $(OBJDIR)/HashMap.o
+	$(CC) $(CFLAGS) $^ -o $@
 
-$(OBJDIR)/main.o: $(SRCDIR)/main.cpp $(INCDIR)/OptNode.h $(INCDIR)/HashNode.h $(INCDIR)/HashMap.h $(INCDIR)/NameSpace.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+$(OBJDIR)/main.o: $(SRCDIR)/main.c $(INCDIR)/HashNode.h $(INCDIR)/HashMap.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/OptNode.o: $(SRCDIR)/OptNode.cpp $(INCDIR)/OptNode.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+$(OBJDIR)/HashNode.o: $(SRCDIR)/HashNode.c $(INCDIR)/HashNode.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/NameNode.o: $(SRCDIR)/NameNode.cpp $(INCDIR)/NameNode.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+$(OBJDIR)/HashMap.o: $(SRCDIR)/HashMap.c $(INCDIR)/HashMap.h $(INCDIR)/HashNode.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/NameSpace.o: $(SRCDIR)/NameSpace.cpp $(INCDIR)/NameSpace.h $(INCDIR)/NameNode.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+#$(BINDIR)/cranky: $(OBJDIR)/main.o $(OBJDIR)/OptNode.o $(OBJDIR)/NameNode.o $(OBJDIR)/NameSpace.o
+#	$(CC) $(CFLAGS) $^ -o $@
+
+#$(OBJDIR)/main.o: $(SRCDIR)/main.c $(INCDIR)/OptNode.h $(INCDIR)/HashNode.h $(INCDIR)/HashMap.h $(INCDIR)/NameSpace.h
+#	$(CC) $(CFLAGS) -c $< -o $@
+
+#$(OBJDIR)/OptNode.o: $(SRCDIR)/OptNode.c $(INCDIR)/OptNode.h
+#	$(CC) $(CFLAGS) -c $< -o $@
+
+#$(OBJDIR)/NameNode.o: $(SRCDIR)/NameNode.c $(INCDIR)/NameNode.h
+#	$(CC) $(CFLAGS) -c $< -o $@
+
+#$(OBJDIR)/NameSpace.o: $(SRCDIR)/NameSpace.c $(INCDIR)/NameSpace.h $(INCDIR)/NameNode.h
+#	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJDIR)/*o
+	rm -f $(OBJDIR)/*.o
+
