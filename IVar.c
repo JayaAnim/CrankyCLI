@@ -4,7 +4,7 @@
 #include "IVar.h"
 
 
-char* tVar_get_name_key(const char* argv) {
+char* (const char* argv) {
     char* name_key = (char*)malloc(sizeof(argv) - 2);
     strcpy(name_key, argv + 2);
     return name_key;
