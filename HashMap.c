@@ -1,16 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/HashMap.h"
-#include "../include/HashNode.h"
+#include "HashMap.h"
+#include "HashNode.h"
 
 
 void tHashMap_uninit(tHashMap* self) {
     for (int i = 0; i < 30; ++i) {
-        if (self->map[i].key == NULL) free(&self->map[i]);
-        else {
+        if (self->map[i].key != NULL) {
             self->map[i].uninit(&self->map[i]);
+            tHashNode* next = self->map[i].next;
+            while (next != NULL) {
+                next->uninit(next);
+                tHashNode* old = next;
+                free(next);
+                next = old;
+            }
         }
     }
+    free(self->map);
 }
 
 int tHashMap_hash(const char* key) {
@@ -41,6 +48,8 @@ void* tHashMap_search(tHashMap* self, char* key) {
 
 int tHashMap_init(tHashMap* inst) {
     inst->map = (tHashNode*)malloc(sizeof(tHashNode) * 30); 
+    for (int i = 0; i < 30; ++i)
+        tHashNode_init(&inst->map[i]);
     inst->uninit = &tHashMap_uninit;
     inst->insert = &tHashMap_insert;
     inst->search = &tHashMap_search;

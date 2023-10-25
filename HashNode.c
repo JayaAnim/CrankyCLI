@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/HashNode.h"
+#include "HashNode.h"
 
 void tHashNode_uninit(tHashNode* self) {
-    if (self->obj != NULL) free(self->obj);
-    if (self->next != NULL) self->uninit(self);
+    if (self->obj != NULL) {
+        if (self->uninit_obj != NULL) self->uninit_obj(self->obj);
+        free(self->obj);
+    }
 }
 
 void* tHashNode_search(tHashNode* self, char* key) {
@@ -30,6 +32,7 @@ int tHashNode_init(tHashNode* inst) {
     inst->uninit = &tHashNode_uninit;
     inst->search = &tHashNode_search;
     inst->append = &tHashNode_append;
+    inst->uninit_obj = NULL;
     inst->next = NULL;
     inst->key = NULL;
     inst->obj = NULL;

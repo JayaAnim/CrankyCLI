@@ -1,6 +1,0 @@
-
-$(OBJDIR)/HashNode.o: $(INCDIR)/HashNode.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(OBJDIR)/HashMap.o: $(INCDIR)/HashMap.h $(INCDIR)/HashNode.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@

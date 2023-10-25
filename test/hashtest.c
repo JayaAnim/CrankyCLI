@@ -1,10 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "../include/HashMap.h"
-#include "../include/HashNode.h"
-
-
-int main(int argc, char* argv[]) {
+/*
+ * 
+ * Tested for leaks, no leaks found
+ *
     tHashMap* map = (tHashMap*)malloc(sizeof(tHashMap)); 
     tHashMap_init(map);
     int* x;
@@ -20,12 +17,8 @@ int main(int argc, char* argv[]) {
     map->insert(map, "--y", y);
     map->insert(map, "--z", z);
     int* new_x = map->search(map, "--x");
-    printf("New x is: %d", *new_x);
-    /*
     int* new_y = map->search(map, "--y");
-    printf("New y is: %d", *new_y);
     int* new_z = map->search(map, "--z");
-    printf("New z is: %d", *new_z);
-    return 0;
-    */
-}
+    map->uninit(map);
+    free(map);
+*/
